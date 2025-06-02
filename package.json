@@ -1,0 +1,46 @@
+{
+  "name": "vehicle-inspection-system",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "start": "expo start",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@expo/cli": "^0.24.13",
+    "@expo/metro-config": "^0.20.14",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-navigation/bottom-tabs": "^6.5.11",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
+    "chart.js": "^4.4.1",
+    "date-fns": "^3.3.1",
+    "expo": "^53.0.9",
+    "expo-camera": "~16.1.6",
+    "expo-font": "~13.3.1",
+    "expo-image-picker": "~16.1.4",
+    "expo-linear-gradient": "~14.1.4",
+    "expo-status-bar": "~2.2.3",
+    "metro": "^0.82.4",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-chart-kit": "^6.12.0",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.10.0",
+    "react-native-svg": "15.11.2",
+    "zustand": "^4.5.1",
+    "react-dom": "19.0.0",
+    "react-native-web": "^0.20.0",
+    "@expo/metro-runtime": "~5.0.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.45",
+    "typescript": "^5.3.0"
+  }
+}
