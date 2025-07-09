@@ -21,10 +21,10 @@ import VehicleDetailScreen from '../screens/user/VehicleDetailScreen';
 
 // Screens - Admin
 import AdminDashboardScreen from '../screens/admin/AdminDashboardScreen';
+import VerifyPlateScreen from '../screens/admin/VerifyPlateScreen'; // Add this import
 // import AdminVerificationScreen from '../screens/admin/AdminVerificationScreen';
 // import AdminUsersScreen from '../screens/admin/AdminUsersScreen';
 // import AdminAnalyticsScreen from '../screens/admin/AdminAnalyticsScreen';
-// import AdminVerifyPlateScreen from '../screens/admin/AdminVerifyPlateScreen';
 
 // Types
 export type AuthStackParamList = {
@@ -145,6 +145,7 @@ const AdminTabNavigator = () => (
         tabBarIcon: ({ color, size }) => <BarChart3 color={color} size={size} />
       }}
     />
+    
     {/* <AdminTab.Screen 
       name="Verification" 
       component={AdminVerificationScreen} 
@@ -173,7 +174,7 @@ const AdminTabNavigator = () => (
 const AdminStackNavigator = () => (
   <AdminStack.Navigator screenOptions={{ headerShown: false }}>
     <AdminStack.Screen name="AdminTabs" component={AdminTabNavigator} />
-    {/* <AdminStack.Screen name="VerifyPlate" component={AdminVerifyPlateScreen} /> */}
+    <AdminStack.Screen name="VerifyPlate" component={VerifyPlateScreen} />
   </AdminStack.Navigator>
 );
 
@@ -184,7 +185,7 @@ const AppNavigator = () => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {!user ? (
-        <RootStack.Screen name="Auth\" component={AuthNavigator} />
+        <RootStack.Screen name="Auth" component={AuthNavigator} />
       ) : user.role === 'admin' ? (
         <RootStack.Screen name="AdminStack" component={AdminStackNavigator} />
       ) : (

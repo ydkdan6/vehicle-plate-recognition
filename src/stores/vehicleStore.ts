@@ -15,6 +15,8 @@ export interface Vehicle {
   registrationDate: string;
   verificationDate?: string;
   imageUrl?: string;
+  owner?: string; // Add owner field for display
+  documents?: string[]; // Add documents array
 }
 
 interface VehicleState {
@@ -26,6 +28,8 @@ interface VehicleState {
   fetchAllVehicles: () => Promise<void>;
   addVehicle: (vehicle: Omit<Vehicle, 'id' | 'status' | 'registrationDate'>) => Promise<boolean>;
   updateVehicleStatus: (id: string, status: 'approved' | 'rejected') => Promise<boolean>;
+  approveVehicle: (id: string) => Promise<boolean>; // Convenience method
+  rejectVehicle: (id: string) => Promise<boolean>; // Convenience method
   getVehicleById: (id: string) => Vehicle | undefined;
   getPendingVehicles: () => Vehicle[];
   getVehiclesByPlateNumber: (plateNumber: string) => Vehicle[];
@@ -45,45 +49,46 @@ const setupInitialVehicles = async () => {
   if (!vehicles) {
     const initialVehicles: Vehicle[] = [
       {
-        id: '1',
-        userId: '2',
-        plateNumber: 'ABC123',
+        id: '1752023212591',
+        userId: 'user1',
+        plateNumber: 'ABC-123-XY',
         make: 'Toyota',
         model: 'Camry',
         year: 2020,
-        color: 'Silver',
-        vin: '1HGCM82633A123456',
-        status: 'approved',
-        registrationDate: '2023-01-15',
-        verificationDate: '2023-01-18',
-        imageUrl: 'https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=800'
-      },
-      {
-        id: '2',
-        userId: '2',
-        plateNumber: 'XYZ789',
-        make: 'Honda',
-        model: 'Civic',
-        year: 2019,
         color: 'Blue',
-        vin: '2HGES16684H123789',
+        vin: 'JT2BF28K9X0123456',
         status: 'pending',
-        registrationDate: '2023-02-10',
-        imageUrl: 'https://images.pexels.com/photos/1007410/pexels-photo-1007410.jpeg?auto=compress&cs=tinysrgb&w=800'
+        registrationDate: new Date().toISOString(),
+        owner: 'John Doe',
+        documents: ['doc1.pdf', 'doc2.pdf']
       },
       {
-        id: '3',
-        userId: '2',
-        plateNumber: 'DEF456',
-        make: 'Ford',
-        model: 'Mustang',
-        year: 2021,
+        id: '1752023212592',
+        userId: 'user2',
+        plateNumber: 'XYZ-456-AB',
+        make: 'Honda',
+        model: 'Accord',
+        year: 2019,
         color: 'Red',
-        vin: '3FMDK4KC8LBA12345',
-        status: 'rejected',
-        registrationDate: '2023-03-05',
-        verificationDate: '2023-03-08',
-        imageUrl: 'https://images.pexels.com/photos/3689532/pexels-photo-3689532.jpeg?auto=compress&cs=tinysrgb&w=800'
+        vin: 'JHMCF36X8XS123456',
+        status: 'pending',
+        registrationDate: new Date().toISOString(),
+        owner: 'Jane Smith',
+        documents: ['doc3.pdf']
+      },
+      {
+        id: '1752023212593',
+        userId: 'user3',
+        plateNumber: 'DEF-789-CD',
+        make: 'Ford',
+        model: 'F-150',
+        year: 2021,
+        color: 'White',
+        vin: '1FTFW1ET5MFC12345',
+        status: 'approved',
+        registrationDate: new Date().toISOString(),
+        verificationDate: new Date().toISOString(),
+        owner: 'Bob Johnson'
       }
     ];
     await AsyncStorage.setItem('vehicles', JSON.stringify(initialVehicles));
@@ -142,12 +147,13 @@ export const useVehicleStore = create<VehicleState>((set, get) => {
           return false;
         }
         
-        // Create new vehicle
+        // Create new vehicle with owner info
         const newVehicle: Vehicle = {
           ...vehicleData,
           id: Date.now().toString(),
           status: 'pending',
-          registrationDate: new Date().toISOString()
+          registrationDate: new Date().toISOString(),
+          owner: vehicleData.owner || 'Unknown Owner' // Fallback for owner
         };
         
         // Add to vehicles array
@@ -207,6 +213,15 @@ export const useVehicleStore = create<VehicleState>((set, get) => {
         set({ error: 'Failed to update vehicle status', loading: false });
         return false;
       }
+    },
+    
+    // Convenience methods for approve/reject
+    approveVehicle: async (id: string) => {
+      return await get().updateVehicleStatus(id, 'approved');
+    },
+    
+    rejectVehicle: async (id: string) => {
+      return await get().updateVehicleStatus(id, 'rejected');
     },
     
     getVehicleById: (id: string) => {
